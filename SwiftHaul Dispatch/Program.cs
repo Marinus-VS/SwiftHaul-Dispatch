@@ -197,16 +197,14 @@ namespace SwiftHaul_Dispatch
                                     Console.Write("Is Weather Restricted (Y/N): "); // unable to drive in bad weather conditions
                                     bool isWeatherRestricted = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                                     WaspRunner newWaspRunner = new WaspRunner(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, maxSpeed, isWeatherRestricted);
-                                    fleetManager.AddVehicle(newWaspRunner);
-                                    ConsoleHelper.ShowSuccess($"{newWaspRunner.VehicleName} (Wasp Runner) has been added to the fleet.");
+                                    fleetManager.AddVehicle(newWaspRunner, "Wasp Runner");
                                     break;
 
                                 case VehicleType.CascadeVan:
                                     Console.Write("Enter max delivery stops: ");
                                     int maxDeliveryStops = Convert.ToInt32(Console.ReadLine());
                                     CascadeVan newCascadeVan = new CascadeVan(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, maxDeliveryStops);
-                                    fleetManager.AddVehicle(newCascadeVan);
-                                    ConsoleHelper.ShowSuccess($"{newCascadeVan.VehicleName} (Cascade Van) has been added to the fleet.");
+                                    fleetManager.AddVehicle(newCascadeVan, "Cascade van");
                                     break;
 
                                 case VehicleType.TitanHauler:
@@ -218,8 +216,7 @@ namespace SwiftHaul_Dispatch
                                         }
 
                                     TitanHauler newTitanHauler = new TitanHauler(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, numberOfTrailers);
-                                    fleetManager.AddVehicle(newTitanHauler);
-                                    ConsoleHelper.ShowSuccess($"{newTitanHauler.VehicleName} (Titan Hauler) has been added to the fleet.");
+                                    fleetManager.AddVehicle(newTitanHauler, "Titan Hauler");
                                     break;
 
                                 case VehicleType.GlacierTrans:
@@ -231,8 +228,7 @@ namespace SwiftHaul_Dispatch
                                         }
 
                                     GlacierTrans newGlacierTrans = new GlacierTrans(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, targetTemperatureCelsius);
-                                    fleetManager.AddVehicle(newGlacierTrans);
-                                    ConsoleHelper.ShowSuccess($"{newGlacierTrans.VehicleName} (Glacier Trans) has been added to the fleet.");
+                                    fleetManager.AddVehicle(newGlacierTrans, "Glacier Trans");
                                     break;
 
                                 default:
@@ -345,7 +341,6 @@ namespace SwiftHaul_Dispatch
                                     bool isFragile = ConsoleHelper. ConvertAnswerToBool(Console.ReadLine());
                                     SmallCargo newSmallCargo = new SmallCargo(newCargoID, newCargoDescription, newCargoWeight, isFragile);
                                     fleetManager.AddCargo(newSmallCargo);
-                                    ConsoleHelper.ShowSuccess($"{newSmallCargo.CargoID} has been added to the system.");
                                     break;
 
                                 case CargoType.MediumCargo:
@@ -353,7 +348,6 @@ namespace SwiftHaul_Dispatch
                                     bool requiresSignature = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                                     MediumCargo newMediumCargo = new MediumCargo(newCargoID, newCargoDescription, newCargoWeight, requiresSignature);
                                     fleetManager.AddCargo(newMediumCargo);
-                                    ConsoleHelper.ShowSuccess($"{newMediumCargo.CargoID} has been added to the system.");
                                     break;
 
                                 case CargoType.LargeCargo:
@@ -361,7 +355,6 @@ namespace SwiftHaul_Dispatch
                                     bool requiresForklift = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                                     LargeCargo newLargeCargo = new LargeCargo(newCargoID, newCargoDescription, newCargoWeight, requiresForklift);
                                     fleetManager.AddCargo(newLargeCargo);
-                                    ConsoleHelper.ShowSuccess($"{newLargeCargo.CargoID} has been added to the system.");
                                     break;
 
                                 case CargoType.RefrigeratedCargo:
@@ -373,7 +366,6 @@ namespace SwiftHaul_Dispatch
                                         }
                                     RefrigeratedCargo newRefrigeratedCargo = new RefrigeratedCargo(newCargoID, newCargoDescription, newCargoWeight, requiredTemperatureCelsius);
                                     fleetManager.AddCargo(newRefrigeratedCargo);
-                                    ConsoleHelper.ShowSuccess($"{newRefrigeratedCargo.CargoID} has been added to the system.");
                                     break;
 
                                 default:

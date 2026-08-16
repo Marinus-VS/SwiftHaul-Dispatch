@@ -34,9 +34,18 @@ namespace SwiftHaul_Dispatch
         /////////////////////////////////////////////////// ---- Vehicle --- ///////////////////////////////////////////////////////////
 
         // add a vehicle to the fleet
-        public void AddVehicle(Vehicle vehicle)
+        public void AddVehicle(Vehicle vehicle, string type)
         {
-            vehicles.Add(vehicle);
+            Vehicle checkVehicle = vehicles.Find(v => v.VehicleID == vehicle.VehicleID);
+            if (checkVehicle == null)
+            {
+                vehicles.Add(vehicle);
+                ConsoleHelper.ShowSuccess($"{vehicle.VehicleName} ({type}) has been added to the fleet.");
+            }
+            else
+            {
+                ConsoleHelper.ShowError($"ID: {vehicle.VehicleID} already exists in the system.");
+            }
         }
 
         // display all vehicles in the fleet, returns true if vehicles exist, false if the fleet was empty
@@ -102,7 +111,16 @@ namespace SwiftHaul_Dispatch
         // add cargo to the system
         public void AddCargo(Cargo cargo)
         {
-            cargoList.Add(cargo);
+            Cargo checkCargo = cargoList.Find(v => v.CargoID == cargo.CargoID);
+            if (checkCargo == null)
+            {
+                cargoList.Add(cargo);
+                ConsoleHelper.ShowSuccess($"{cargo.CargoID} has been added to the system.");
+            }
+            else
+            {
+                ConsoleHelper.ShowError($"ID: {cargo.CargoID} already exists in the system.");
+            }
         }
 
         // display all cargo in the system, returns true if cargo exists, false if the system was empty
