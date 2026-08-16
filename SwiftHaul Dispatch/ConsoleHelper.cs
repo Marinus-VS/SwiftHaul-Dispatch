@@ -121,6 +121,10 @@ namespace SwiftHaul_Dispatch
                     ShowError(vehicleConfigEx.Message);
                     break;
 
+                case SaveFileNotFoundException saveNotFoundEx:
+                    ShowError(saveNotFoundEx.Message);
+                    break;
+
                 case FormatException formatEx:
                     ShowError("Invalid input. Please enter a valid number.");
                     break;

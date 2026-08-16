@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,6 +16,9 @@ namespace SwiftHaul_Dispatch
 
         public event DispatchEventHandler DeliveryCompleted;
         public event DispatchEventHandler AlertTriggered;
+
+        // folder where all save files live
+        private static readonly string SaveFolder = "Saves";
 
         public List<Vehicle> Vehicles
         {
@@ -247,6 +252,226 @@ namespace SwiftHaul_Dispatch
         public void StopDispatchMonitor()
         {
             isMonitoring = false; 
+        }
+
+        /////////////////////////////////////////////////// ---- File Functionality --- ///////////////////////////////////////////////////////////
+
+        //////// ---- Save Function --- //////
+
+        // converts the real vehicle list into saveable data objects
+        private List<VehicleSaveData> ConvertVehiclesToSaveData()
+        {
+            List<VehicleSaveData> result = new List<VehicleSaveData>();
+
+            foreach (Vehicle v in vehicles)
+            {
+                // reads the data into SaveData.cs
+                VehicleSaveData data = new VehicleSaveData
+                {
+                    VehicleID = v.VehicleID,
+                    VehicleName = v.VehicleName,
+                    VehicleMilage = v.VehicleMilage,
+                    VehicleCapacity = v.VehicleCapacity,
+                    VehicleType = v.GetType().Name
+                };
+
+                // fill in the one type specific field that applies
+                switch (v)
+                {
+                    case WaspRunner wasp:
+                        data.MaxSpeedKmh = wasp.MaxSpeedKmh;
+                        data.IsWeatherRestricted = wasp.IsWeatherRestricted;
+                        break;
+                    case CascadeVan van:
+                        data.MaxDeliveryStops = van.MaxDeliveryStops;
+                        break;
+                    case TitanHauler titan:
+                        data.NumberOfTrailers = titan.NumberOfTrailers;
+                        break;
+                    case GlacierTrans glacier:
+                        data.TargetTemperatureCelsius = glacier.TargetTemperatureCelsius;
+                        break;
+                }
+
+                result.Add(data);
+            }
+
+            return result;
+        }
+
+        // converts the real cargo list into saveable data objects
+        private List<CargoSaveData> ConvertCargoToSaveData()
+        {
+            List<CargoSaveData> result = new List<CargoSaveData>();
+
+            foreach (Cargo item in cargoList)
+            {
+                // reads the data into SaveData.cs
+                CargoSaveData data = new CargoSaveData
+                {
+                    CargoID = item.CargoID,
+                    Description = item.Description,
+                    Weight = item.Weight,
+                    CargoType = item.GetType().Name
+                };
+
+                switch (item)
+                {
+                    case SmallCargo small:
+                        data.IsFragile = small.IsFragile;
+                        break;
+                    case MediumCargo medium:
+                        data.RequiresSignature = medium.RequiresSignature;
+                        break;
+                    case LargeCargo large:
+                        data.RequiresForklift = large.RequiresForklift;
+                        break;
+                    case RefrigeratedCargo refrigerated:
+                        data.RequiredTemperatureCelsius = refrigerated.RequiredTemperatureCelsius;
+                        break;
+                }
+
+                result.Add(data);
+            }
+
+            return result;
+        }
+
+        // saves the current fleet / cargo state to a named file
+        public void SaveCurrentLoadout(string saveName)
+        {
+            if (!Directory.Exists(SaveFolder))
+            {
+                Directory.CreateDirectory(SaveFolder);
+            }
+
+            string filePath = Path.Combine(SaveFolder, $"{saveName}.json");
+
+            if (File.Exists(filePath))
+            {
+                
+                ConsoleHelper.ShowWarning($"A save named '{saveName}' already exists. Overwrite? (Y/N): ");
+                ConsoleHelper.ChooseOptionStyling();
+                bool overwrite = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
+
+                if (!overwrite)
+                {
+                    ConsoleHelper.ShowError("Save cancelled.");
+                    return;
+                }
+            }
+
+            LoadoutSaveData saveData = new LoadoutSaveData
+            {
+                SavedAt = DateTime.Now,
+                Vehicles = ConvertVehiclesToSaveData(),
+                Cargo = ConvertCargoToSaveData()
+            };
+
+            string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+            File.WriteAllText(filePath, json);
+
+            ConsoleHelper.ShowSuccess($"Loadout saved as '{saveName}'.");
+        }
+
+
+        //////// ---- Load Function --- //////
+
+        // reconstructs actual Vehicle objects from save data
+        private List<Vehicle> ConvertSaveDataToVehicles(List<VehicleSaveData> data)
+        {
+            List<Vehicle> result = new List<Vehicle>();
+
+            foreach (VehicleSaveData v in data)
+            {
+                Vehicle vehicle = null;
+
+                switch (v.VehicleType)
+                {
+                    case "WaspRunner":
+                        vehicle = new WaspRunner(v.VehicleID, v.VehicleName, v.VehicleMilage, v.VehicleCapacity,
+                            v.MaxSpeedKmh.Value, v.IsWeatherRestricted.Value);
+                        break;
+
+                    case "CascadeVan":
+                        vehicle = new CascadeVan(v.VehicleID, v.VehicleName, v.VehicleMilage, v.VehicleCapacity,
+                            v.MaxDeliveryStops.Value);
+                        break;
+
+                    case "TitanHauler":
+                        vehicle = new TitanHauler(v.VehicleID, v.VehicleName, v.VehicleMilage, v.VehicleCapacity,
+                            v.NumberOfTrailers.Value);
+                        break;
+
+                    case "GlacierTrans":
+                        vehicle = new GlacierTrans(v.VehicleID, v.VehicleName, v.VehicleMilage, v.VehicleCapacity,
+                            v.TargetTemperatureCelsius.Value);
+                        break;
+                }
+
+                if (vehicle != null)
+                {
+                    result.Add(vehicle);
+                }
+            }
+
+            return result;
+        }
+
+        // reconstructs actual Cargo objects from flat save data
+        private List<Cargo> ConvertSaveDataToCargo(List<CargoSaveData> data)
+        {
+            List<Cargo> result = new List<Cargo>();
+
+            foreach (CargoSaveData c in data)
+            {
+                Cargo cargo = null;
+
+                switch (c.CargoType)
+                {
+                    case "SmallCargo":
+                        cargo = new SmallCargo(c.CargoID, c.Description, c.Weight, c.IsFragile.Value);
+                        break;
+
+                    case "MediumCargo":
+                        cargo = new MediumCargo(c.CargoID, c.Description, c.Weight, c.RequiresSignature.Value);
+                        break;
+
+                    case "LargeCargo":
+                        cargo = new LargeCargo(c.CargoID, c.Description, c.Weight, c.RequiresForklift.Value);
+                        break;
+
+                    case "RefrigeratedCargo":
+                        cargo = new RefrigeratedCargo(c.CargoID, c.Description, c.Weight, c.RequiredTemperatureCelsius.Value);
+                        break;
+                }
+
+                if (cargo != null)
+                {
+                    result.Add(cargo);
+                }
+            }
+
+            return result;
+        }
+
+        // loads a saved loadout by name, replacing the current fleet and cargo
+        public void LoadSavedState(string saveName)
+        {
+            string filePath = Path.Combine(SaveFolder, $"{saveName}.json");
+
+            if (!File.Exists(filePath))
+            {
+                throw new SaveFileNotFoundException($"Save file '{saveName}' not found.");
+            }
+
+            string json = File.ReadAllText(filePath);
+            LoadoutSaveData saveData = JsonConvert.DeserializeObject<LoadoutSaveData>(json);
+
+            vehicles = ConvertSaveDataToVehicles(saveData.Vehicles);
+            cargoList = ConvertSaveDataToCargo(saveData.Cargo);
+
+            ConsoleHelper.ShowSuccess($"Loadout '{saveName}' loaded successfully. ({vehicles.Count} vehicles, {cargoList.Count} cargo items)");
         }
     }
 }

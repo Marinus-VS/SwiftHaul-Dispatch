@@ -30,7 +30,6 @@ namespace SwiftHaul_Dispatch
             AddVehicle = 1,
             DisplayAllVehicles,
             RemoveVehicle,
-            
             BackToMainMenu
         }
 
@@ -56,6 +55,16 @@ namespace SwiftHaul_Dispatch
             MediumCargo,
             LargeCargo, // gets a 15% charge if a forklift is required
             RefrigeratedCargo // gets a 25% charge for refrigeration
+        }
+
+        public enum FileMenu
+        {
+            SaveCurrentLoadout = 1,
+            LoadSavedState,
+            ViewAllSaves,
+            RemoveSavedState,
+            ClearCurrentLoadout,
+            BackToMainMenu
         }
 
         /////////////////////////////////////////////////// ---- MAIN METHOD --- ///////////////////////////////////////////////////////////
@@ -98,6 +107,7 @@ namespace SwiftHaul_Dispatch
                         case Menu.ViewDispatchLog:
                             break;
                         case Menu.ManageSaveOperations:
+                            ManageSaveOperations();
                             break;
                         case Menu.Exit:
                             running = false;
@@ -409,6 +419,67 @@ namespace SwiftHaul_Dispatch
         static void AssignCargoToVehicle()
         {
 
+        }
+
+        /////////////////////////////////////////////////// ---- File Functionality --- ///////////////////////////////////////////////////////////
+
+        static void ManageSaveOperations()
+        {
+            bool manageSaveOperations = true;
+            ConsoleHelper.ClearScreen();
+            while (manageSaveOperations)
+            {
+                Console.ForegroundColor = ConsoleColor.Magenta;
+                Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                Console.WriteLine("     Manage Save Operations");
+                Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                Console.ResetColor();
+                Console.WriteLine();
+                Console.WriteLine("1. Save Current Loadout");
+                Console.WriteLine("2. Load Saved State");
+                Console.WriteLine("3. View All Saves");
+                Console.WriteLine("4. Remove Saved State");
+                Console.WriteLine("5. Clear Current Loadout");
+                Console.WriteLine("6. Back To Main Menu");
+                Console.WriteLine();
+                ConsoleHelper.ChooseOptionStyling();
+
+                try
+                {
+                    int option = Convert.ToInt32(Console.ReadLine());
+
+                    switch ((FileMenu)option)
+                    {
+                        case FileMenu.SaveCurrentLoadout:
+                            Console.Write("Enter a name for this save: ");
+                            string saveName = Console.ReadLine();
+                            fleetManager.SaveCurrentLoadout(saveName);
+                            break;
+                        case FileMenu.LoadSavedState:
+                            Console.Write("Enter the name of the save to load: ");
+                            string loadName = Console.ReadLine();
+                            fleetManager.LoadSavedState(loadName);
+                            break;
+                        case FileMenu.ViewAllSaves:
+                            break;
+                        case FileMenu.RemoveSavedState:
+                            break;
+                        case FileMenu.ClearCurrentLoadout:
+                            break;
+                        case FileMenu.BackToMainMenu:
+                            ConsoleHelper.ClearScreen();
+                            manageSaveOperations = false;
+                            break;
+                        default:
+                            ConsoleHelper.ShowError("Invalid menu option. Please try again.");
+                            break;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ConsoleHelper.HandleException(ex);
+                }
+            }
         }
     }
 }

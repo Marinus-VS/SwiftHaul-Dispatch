@@ -45,4 +45,12 @@ namespace SwiftHaul_Dispatch
         {
         }
     }
+
+    // exeption for when a file is not found
+    public class SaveFileNotFoundException : Exception
+    {
+        public SaveFileNotFoundException(string message) : base(message)
+        {
+        }
+    }
 }
