@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Diagnostics.SymbolStore;
 using System.Linq;
@@ -172,9 +173,11 @@ namespace SwiftHaul_Dispatch
                             int newVehicleCapacity = Convert.ToInt32(Console.ReadLine());
 
                             // validate vehicle capacity based on vehicle type
-                                if ((VehicleType)type == VehicleType.WaspRunner && (newVehicleCapacity > 30 || newVehicleCapacity < 1))
+                            if (!(newVehicleCapacity < 1 || newVehicleCapacity > 36000))
+                            {
+                                if ((VehicleType)type == VehicleType.WaspRunner && newVehicleCapacity > 30)
                                 {
-                                    throw new IncorrectVehicleForType(newVehicleCapacity > 30 ? "Vehicle capacity too high for Wasp Runner." : "Vehicle capacity too low for Wasp Runner.");
+                                    throw new IncorrectVehicleForType("Vehicle capacity too high for Wasp Runner.");
                                 }
                                 else if ((VehicleType)type == VehicleType.CascadeVan && (newVehicleCapacity > 1700 || newVehicleCapacity < 31))
                                 {
@@ -182,16 +185,17 @@ namespace SwiftHaul_Dispatch
                                 }
                                 else if ((VehicleType)type == VehicleType.TitanHauler && (newVehicleCapacity > 36000 || newVehicleCapacity < 1001))
                                 {
-                                    throw new IncorrectVehicleForType(newVehicleCapacity > 36000 ? "Vehicle capacity too high for Titan Hauler." : "Vehicle capacity too low for Titan Hauler.");
+                                    throw new IncorrectVehicleForType("Vehicle capacity too low for Titan Hauler.");
                                 }
                                 else if ((VehicleType)type == VehicleType.GlacierTrans && (newVehicleCapacity > 7000 || newVehicleCapacity < 31))
                                 {
                                     throw new IncorrectVehicleForType(newVehicleCapacity > 7000 ? "Vehicle capacity too high for Glacier Trans." : "Vehicle capacity too low for Glacier Trans.");
                                 }
-                                else if (newVehicleMileage < 0)
-                                {
-                                    throw new ArgumentException("Invalid input. Please enter a non-negative mileage.");
-                                }
+                            }
+                            else 
+                            {
+                                throw new ArgumentException(newVehicleCapacity > 36000 ? "Vehicle capacity is too high for our transport options." : "Vehicle capacity is too low for our transport options.");
+                            }
 
                             switch ((VehicleType)type)
                             {
@@ -310,17 +314,29 @@ namespace SwiftHaul_Dispatch
                             Console.Write("Enter Cargo Weight: ");
                             double newCargoWeight = Convert.ToDouble(Console.ReadLine());
 
-                            if ((CargoType)type == CargoType.SmallCargo && newCargoWeight > 30)
+                            // validate cargo capacity based on cargo type
+                            if (!(newCargoWeight < 1 || newCargoWeight > 36000))
                             {
-                                throw new IncorrectCargoForType("Cargo too heavy for small cargo type.");
+                                if ((CargoType)type == CargoType.SmallCargo && newCargoWeight > 30)
+                                {
+                                    throw new IncorrectCargoForType("Cargo too heavy for small cargo type.");
+                                }
+                                else if ((CargoType)type == CargoType.MediumCargo && (newCargoWeight > 1000 || newCargoWeight < 31))
+                                {
+                                    throw new IncorrectCargoForType(newCargoWeight > 1000 ? "Cargo too heavy for medium cargo type." : "Cargo too light for medium cargo type.");
+                                }
+                                else if ((CargoType)type == CargoType.LargeCargo && (newCargoWeight > 36000 || newCargoWeight < 1001))
+                                {
+                                    throw new IncorrectCargoForType("Cargo too light for large cargo type.");
+                                }
+                                else if ((CargoType)type == CargoType.RefrigeratedCargo && (newCargoWeight > 7000 || newCargoWeight < 31))
+                                {
+                                    throw new IncorrectCargoForType(newCargoWeight > 7000 ? "Cargo too heavy for refrigerated cargo type." : "Cargo too light for refrigerated cargo type.");
+                                }
                             }
-                            else if ((CargoType)type == CargoType.MediumCargo && (newCargoWeight > 1000 || newCargoWeight < 31))
+                            else
                             {
-                                throw new IncorrectCargoForType(newCargoWeight > 1000 ? "Cargo too heavy for medium cargo type." : "Cargo too light for medium cargo type.");
-                            }
-                            else if ((CargoType)type == CargoType.LargeCargo && (newCargoWeight > 36000 || newCargoWeight < 1001))
-                            {
-                                throw new IncorrectCargoForType(newCargoWeight > 36000 ? "Cargo too heavy for large cargo type." : "Cargo too light for large cargo type.");
+                                throw new ArgumentException(newCargoWeight > 36000 ? "Cargo capacity is too high for our transport options." : "Cargo capacity is too low for our transport options.");
                             }
 
                             switch ((CargoType)type)
