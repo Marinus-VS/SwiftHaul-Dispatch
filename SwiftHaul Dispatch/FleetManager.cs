@@ -39,37 +39,15 @@ namespace SwiftHaul_Dispatch
             vehicles.Add(vehicle);
         }
 
-        // remove a vehicle from the fleet by its ID
-        public void RemoveVehicle(int vehicleID)
-        {
-            try
-            {
-                Vehicle vehicleToRemove = vehicles.Find(v => v.VehicleID == vehicleID);
-
-                if (vehicleToRemove == null)
-                {
-                    throw new VehicleNotFoundException($"Vehicle with ID {vehicleID} not found.");
-                }
-
-                vehicles.Remove(vehicleToRemove);
-                ConsoleHelper.ShowMessage($"{vehicleToRemove.VehicleName} removed from the fleet.");
-            }
-            catch (VehicleNotFoundException ex)
-            {
-                ConsoleHelper.HandleException(ex);
-            }
-        }
-
-        // display all vehicles in the fleet
-        public void DisplayAllVehicles(bool waitForKeyPress = true)
+        // display all vehicles in the fleet, returns true if vehicles exist, false if the fleet was empty
+        public bool DisplayAllVehicles(bool waitForKeyPress = true)
         {
             if (vehicles.Count == 0)
             {
-                ConsoleHelper.ShowMessage("No vehicles currently in the fleet.");
-                return;
+                ConsoleHelper.ShowError("No vehicles currently in the fleet.");
+                return false;
             }
 
-            // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated
             Console.WriteLine($"\n{"ID",-5}{"Name",-15}{"Type",-15}{"Mileage",-10}{"Capacity",-10}{"Details",-40}");
             Console.WriteLine(new string('-', 95));
 
@@ -82,7 +60,42 @@ namespace SwiftHaul_Dispatch
             {
                 ConsoleHelper.PressAnyKeyToContinue();
             }
+
+            return true;
         }
+
+        // remove a vehicle from the fleet by its ID
+        public void RemoveVehicle(int vehicleID)
+        {
+            try
+            {
+                Vehicle vehicleToRemove = vehicles.Find(v => v.VehicleID == vehicleID);
+
+                if (vehicleToRemove == null)
+                {
+                    throw new VehicleNotFoundException($"Vehicle with ID {vehicleID} not found.");
+                }
+
+                ConsoleHelper.ShowWarning($"Are you sure you would like to remove {vehicleToRemove.VehicleName}? (Y / N)");
+                ConsoleHelper.ChooseOptionStyling();
+                bool option = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
+                if (option)
+                {
+                    vehicles.Remove(vehicleToRemove);
+                    ConsoleHelper.ShowSuccess($"{vehicleToRemove.VehicleName} removed from the fleet.");
+                }
+                else
+                {
+                    ConsoleHelper.ShowError($"{vehicleToRemove.VehicleName} was not removed from the fleet.");
+                }
+
+            }
+            catch (VehicleNotFoundException ex)
+            {
+                ConsoleHelper.HandleException(ex);
+            }
+        }
+
 
         /////////////////////////////////////////////////// ---- CARGO --- ///////////////////////////////////////////////////////////
 
@@ -92,34 +105,13 @@ namespace SwiftHaul_Dispatch
             cargoList.Add(cargo);
         }
 
-        // remove cargo from the system by its ID
-        public void RemoveCargo(int cargoID)
-        {
-            try
-            {
-                Cargo cargoToRemove = cargoList.Find(c => c.CargoID == cargoID);
-
-                if (cargoToRemove == null)
-                {
-                    throw new CargoNotFoundException($"Cargo with ID {cargoID} not found.");
-                }
-
-                cargoList.Remove(cargoToRemove);
-                ConsoleHelper.ShowMessage($"Cargo ID {cargoToRemove.CargoID} removed from the system.");
-            }
-            catch (CargoNotFoundException ex)
-            {
-                ConsoleHelper.HandleException(ex);
-            }
-        }
-
-        // display all cargo in the system
-        public void DisplayAllCargo(bool waitForKeyPress = true)
+        // display all cargo in the system, returns true if cargo exists, false if the system was empty
+        public bool DisplayAllCargo(bool waitForKeyPress = true)
         {
             if (cargoList.Count == 0)
             {
-                ConsoleHelper.ShowMessage("No cargo currently in the system.");
-                return;
+                ConsoleHelper.ShowError("No cargo currently in the system.");
+                return false;
             }
 
             // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated
@@ -135,7 +127,42 @@ namespace SwiftHaul_Dispatch
             {
                 ConsoleHelper.PressAnyKeyToContinue();
             }
+
+            return true;
         }
+
+
+        // remove cargo from the system by its ID
+        public void RemoveCargo(int cargoID)
+        {
+            try
+            {
+                Cargo cargoToRemove = cargoList.Find(c => c.CargoID == cargoID);
+
+                if (cargoToRemove == null)
+                {
+                    throw new CargoNotFoundException($"Cargo with ID {cargoID} not found.");
+                }
+
+                ConsoleHelper.ShowWarning($"Are you srue you want to remove cargo ID: {cargoToRemove.CargoID}");
+                bool option = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
+                ConsoleHelper.ChooseOptionStyling();
+                if (option)
+                {
+                    cargoList.Remove(cargoToRemove);
+                    ConsoleHelper.ShowSuccess($"{cargoToRemove.CargoID} removed from the system.");
+                }
+                else
+                {
+                    ConsoleHelper.ShowError($"{cargoToRemove.CargoID} was not removed from the fleet.");
+                }
+            }
+            catch (CargoNotFoundException ex)
+            {
+                ConsoleHelper.HandleException(ex);
+            }
+        }
+
 
         /////////////////////////////////////////////////// ---- Events --- ///////////////////////////////////////////////////////////
 

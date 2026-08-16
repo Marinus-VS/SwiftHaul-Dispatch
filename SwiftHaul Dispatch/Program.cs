@@ -15,24 +15,6 @@ namespace SwiftHaul_Dispatch
         // create a static instance of FleetManager to manage vehicles and cargo
         static FleetManager fleetManager = new FleetManager();
 
-
-        // helper method to convert user input of "Y" or "N" to a boolean value
-        static bool ConvertAnswerToBool(string answer)
-        {
-            if (answer.ToUpper() == "Y")
-            {
-                return true;
-            }
-            else if (answer.ToUpper() == "N")
-            {
-                return false;
-            }
-            else
-            {
-                throw new ArgumentException("Invalid input. Please enter 'Y' or 'N'.");
-            }
-        }
-
         public enum Menu
         {
             ManageVehicles = 1,
@@ -83,9 +65,11 @@ namespace SwiftHaul_Dispatch
             ConsoleHelper.ClearScreen();
             while (running)
             {
+                Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("================================");
                 Console.WriteLine("     Swift-Haul Dispatch");
                 Console.WriteLine("================================");
+                Console.ResetColor();
                 Console.WriteLine();
                 Console.WriteLine("1. Manage Vehicles");
                 Console.WriteLine("2. Manage Cargo");
@@ -93,7 +77,7 @@ namespace SwiftHaul_Dispatch
                 Console.WriteLine("4. View Dispatch Log");
                 Console.WriteLine("5. Exit");
                 Console.WriteLine();
-                Console.Write("Choose an option: ");
+                ConsoleHelper.ChooseOptionStyling();
 
                 try
                 {
@@ -115,8 +99,8 @@ namespace SwiftHaul_Dispatch
                             running = false;
                             break;
                         default:
-                            ConsoleHelper.InvalidMenuOption();
-                        break;
+                            ConsoleHelper.ShowError("Invalid menu option. Please try again.");
+                            break;
                     }
                 }
                 catch (Exception ex)
@@ -134,28 +118,32 @@ namespace SwiftHaul_Dispatch
             ConsoleHelper.ClearScreen();
             while (managingVehicles)
             {
+                Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 Console.WriteLine("     Manage Vehicles");
                 Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                Console.ResetColor();
                 Console.WriteLine();
                 Console.WriteLine("1. Add Vehicle");
                 Console.WriteLine("2. Display All Vehicles");
                 Console.WriteLine("3. Remove Vehicle");
                 Console.WriteLine("4. Back to Main Menu");
                 Console.WriteLine();
-                Console.Write("Choose an option: ");
+                ConsoleHelper.ChooseOptionStyling();
                 try
                 {
                     int option = Convert.ToInt32(Console.ReadLine());
                     switch ((VehicleMenu)option)
                     {
                         case VehicleMenu.AddVehicle:
+                            Console.ForegroundColor = ConsoleColor.DarkBlue;
                             Console.WriteLine("\nSelect Vehicle Type:");
-                            Console.WriteLine("1. Wasp Runner");
-                            Console.WriteLine("2. Cascade Van");
-                            Console.WriteLine("3. Titan Hauler");
-                            Console.WriteLine("4. Glacier Trans");
-                            Console.Write("Choose an option: ");
+                            Console.ResetColor();
+                            Console.WriteLine("1. Wasp Runner (Capacity: 1 - 30)kg");
+                            Console.WriteLine("2. Cascade Van (Capacity: 30 - 1700)kg");
+                            Console.WriteLine("3. Titan Hauler (Capacity: 1000 - 36000)kg");
+                            Console.WriteLine("4. Glacier Trans (Capacity: 30 - 7000)kg");
+                            ConsoleHelper.ChooseOptionStyling();
 
                             int type = Convert.ToInt32(Console.ReadLine());
 
@@ -169,7 +157,7 @@ namespace SwiftHaul_Dispatch
                             Console.Write("Enter Vehicle Milage: ");
                             int newVehicleMileage = Convert.ToInt32(Console.ReadLine());
 
-                            Console.Write("Enter Vehicle Capacity (kg): ");
+                            Console.Write("Enter Vehicle Capacity:");
                             int newVehicleCapacity = Convert.ToInt32(Console.ReadLine());
 
                             // validate vehicle capacity based on vehicle type
@@ -179,15 +167,15 @@ namespace SwiftHaul_Dispatch
                                 {
                                     throw new IncorrectVehicleForType("Vehicle capacity too high for Wasp Runner.");
                                 }
-                                else if ((VehicleType)type == VehicleType.CascadeVan && (newVehicleCapacity > 1700 || newVehicleCapacity < 31))
+                                else if ((VehicleType)type == VehicleType.CascadeVan && (newVehicleCapacity > 1700 || newVehicleCapacity < 30))
                                 {
                                     throw new IncorrectVehicleForType(newVehicleCapacity > 1700 ? "Vehicle capacity too high for Cascade Van." : "Vehicle capacity too low for Cascade Van.");
                                 }
-                                else if ((VehicleType)type == VehicleType.TitanHauler && (newVehicleCapacity > 36000 || newVehicleCapacity < 1001))
+                                else if ((VehicleType)type == VehicleType.TitanHauler && (newVehicleCapacity > 36000 || newVehicleCapacity < 1000))
                                 {
                                     throw new IncorrectVehicleForType("Vehicle capacity too low for Titan Hauler.");
                                 }
-                                else if ((VehicleType)type == VehicleType.GlacierTrans && (newVehicleCapacity > 7000 || newVehicleCapacity < 31))
+                                else if ((VehicleType)type == VehicleType.GlacierTrans && (newVehicleCapacity > 7000 || newVehicleCapacity < 30))
                                 {
                                     throw new IncorrectVehicleForType(newVehicleCapacity > 7000 ? "Vehicle capacity too high for Glacier Trans." : "Vehicle capacity too low for Glacier Trans.");
                                 }
@@ -203,10 +191,10 @@ namespace SwiftHaul_Dispatch
                                     Console.Write("Enter Max Speed (km/h): ");
                                     int maxSpeed = Convert.ToInt32(Console.ReadLine());
                                     Console.Write("Is Weather Restricted (Y/N): "); // unable to drive in bad weather conditions
-                                    bool isWeatherRestricted = ConvertAnswerToBool(Console.ReadLine());
+                                    bool isWeatherRestricted = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                                     WaspRunner newWaspRunner = new WaspRunner(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, maxSpeed, isWeatherRestricted);
                                     fleetManager.AddVehicle(newWaspRunner);
-                                    ConsoleHelper.ShowMessage($"{newWaspRunner.VehicleName} (Wasp Runner) has been added to the fleet.");
+                                    ConsoleHelper.ShowSuccess($"{newWaspRunner.VehicleName} (Wasp Runner) has been added to the fleet.");
                                     break;
 
                                 case VehicleType.CascadeVan:
@@ -214,7 +202,7 @@ namespace SwiftHaul_Dispatch
                                     int maxDeliveryStops = Convert.ToInt32(Console.ReadLine());
                                     CascadeVan newCascadeVan = new CascadeVan(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, maxDeliveryStops);
                                     fleetManager.AddVehicle(newCascadeVan);
-                                    ConsoleHelper.ShowMessage($"{newCascadeVan.VehicleName} (Cascade Van) has been added to the fleet.");
+                                    ConsoleHelper.ShowSuccess($"{newCascadeVan.VehicleName} (Cascade Van) has been added to the fleet.");
                                     break;
 
                                 case VehicleType.TitanHauler:
@@ -227,7 +215,7 @@ namespace SwiftHaul_Dispatch
 
                                     TitanHauler newTitanHauler = new TitanHauler(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, numberOfTrailers);
                                     fleetManager.AddVehicle(newTitanHauler);
-                                    ConsoleHelper.ShowMessage($"{newTitanHauler.VehicleName} (Titan Hauler) has been added to the fleet.");
+                                    ConsoleHelper.ShowSuccess($"{newTitanHauler.VehicleName} (Titan Hauler) has been added to the fleet.");
                                     break;
 
                                 case VehicleType.GlacierTrans:
@@ -240,11 +228,11 @@ namespace SwiftHaul_Dispatch
 
                                     GlacierTrans newGlacierTrans = new GlacierTrans(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, targetTemperatureCelsius);
                                     fleetManager.AddVehicle(newGlacierTrans);
-                                    ConsoleHelper.ShowMessage($"{newGlacierTrans.VehicleName} (Glacier Trans) has been added to the fleet.");
+                                    ConsoleHelper.ShowSuccess($"{newGlacierTrans.VehicleName} (Glacier Trans) has been added to the fleet.");
                                     break;
 
                                 default:
-                                    ConsoleHelper.InvalidMenuOption();
+                                    ConsoleHelper.ShowError("Invalid menu option. Please try again.");
                                     break;
                             }
                             break;
@@ -252,17 +240,19 @@ namespace SwiftHaul_Dispatch
                             fleetManager.DisplayAllVehicles();
                             break;
                         case VehicleMenu.RemoveVehicle:
-                            fleetManager.DisplayAllVehicles(false); // false wont prompt the waiting for key message
-                            Console.Write("\nEnter Vehicle ID: ");
-                            int removeVehicleID = Convert.ToInt32(Console.ReadLine());
-                            fleetManager.RemoveVehicle(removeVehicleID);
+                            if (fleetManager.DisplayAllVehicles(false)) // only continue if there were vehicles to show
+                            {
+                                Console.Write("\nEnter Vehicle ID: ");
+                                int removeVehicleID = Convert.ToInt32(Console.ReadLine());
+                                fleetManager.RemoveVehicle(removeVehicleID);
+                            }
                             break;
                         case VehicleMenu.BackToMainMenu:
                             ConsoleHelper.ClearScreen();
                             managingVehicles = false;
                             break;
                         default:
-                            ConsoleHelper.InvalidMenuOption();
+                            ConsoleHelper.ShowError("Invalid menu option. Please try again.");
                             break;
                     }
                 }
@@ -281,28 +271,33 @@ namespace SwiftHaul_Dispatch
             ConsoleHelper.ClearScreen();
             while (managingCargo)
             {
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 Console.WriteLine("     Manage Cargo");
                 Console.WriteLine(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                Console.ResetColor();
                 Console.WriteLine();
                 Console.WriteLine("1. Add Cargo");
                 Console.WriteLine("2. Display All Cargo");
                 Console.WriteLine("3. Remove Cargo");
                 Console.WriteLine("4. Back to Main Menu");
                 Console.WriteLine();
-                Console.Write("Choose an option: ");
+                ConsoleHelper.ChooseOptionStyling();
+
                 try
                 {
                     int option = Convert.ToInt32(Console.ReadLine());
                     switch ((CargoMenu)option)
                     {
                         case CargoMenu.AddCargo:
+                            Console.ForegroundColor = ConsoleColor.Yellow;
                             Console.WriteLine("\nSelect a cargo type:");
-                            Console.WriteLine("1. Small Cargo");
-                            Console.WriteLine("2. Medium Cargo");
-                            Console.WriteLine("3. Large Cargo");
-                            Console.WriteLine("4. Refrigerated Cargo");
-                            Console.Write("Choose an option: ");
+                            Console.ResetColor();
+                            Console.WriteLine("1. Small Cargo (Weight: 1 - 30)kg");
+                            Console.WriteLine("2. Medium Cargo (Weight: 30 - 1000)kg");
+                            Console.WriteLine("3. Large Cargo (Weight: 1000 - 36000)kg");
+                            Console.WriteLine("4. Refrigerated Cargo (Weight: 30 - 7000)kg");
+                            ConsoleHelper.ChooseOptionStyling();
                             int type = Convert.ToInt32(Console.ReadLine());
 
                             Console.Write("Enter Cargo ID: ");
@@ -321,15 +316,15 @@ namespace SwiftHaul_Dispatch
                                 {
                                     throw new IncorrectCargoForType("Cargo too heavy for small cargo type.");
                                 }
-                                else if ((CargoType)type == CargoType.MediumCargo && (newCargoWeight > 1000 || newCargoWeight < 31))
+                                else if ((CargoType)type == CargoType.MediumCargo && (newCargoWeight > 1000 || newCargoWeight < 30))
                                 {
                                     throw new IncorrectCargoForType(newCargoWeight > 1000 ? "Cargo too heavy for medium cargo type." : "Cargo too light for medium cargo type.");
                                 }
-                                else if ((CargoType)type == CargoType.LargeCargo && (newCargoWeight > 36000 || newCargoWeight < 1001))
+                                else if ((CargoType)type == CargoType.LargeCargo && (newCargoWeight > 36000 || newCargoWeight < 1000))
                                 {
                                     throw new IncorrectCargoForType("Cargo too light for large cargo type.");
                                 }
-                                else if ((CargoType)type == CargoType.RefrigeratedCargo && (newCargoWeight > 7000 || newCargoWeight < 31))
+                                else if ((CargoType)type == CargoType.RefrigeratedCargo && (newCargoWeight > 7000 || newCargoWeight < 30))
                                 {
                                     throw new IncorrectCargoForType(newCargoWeight > 7000 ? "Cargo too heavy for refrigerated cargo type." : "Cargo too light for refrigerated cargo type.");
                                 }
@@ -342,27 +337,27 @@ namespace SwiftHaul_Dispatch
                             switch ((CargoType)type)
                             {
                                 case CargoType.SmallCargo:
-                                    Console.Write("Is the cargo fragile? (Y/N)");
-                                    bool isFragile = ConvertAnswerToBool(Console.ReadLine());
+                                    Console.Write("Is the cargo fragile? (Y/N): ");
+                                    bool isFragile = ConsoleHelper. ConvertAnswerToBool(Console.ReadLine());
                                     SmallCargo newSmallCargo = new SmallCargo(newCargoID, newCargoDescription, newCargoWeight, isFragile);
                                     fleetManager.AddCargo(newSmallCargo);
-                                    ConsoleHelper.ShowMessage($"{newSmallCargo.CargoID} has been added to the system.");
+                                    ConsoleHelper.ShowSuccess($"{newSmallCargo.CargoID} has been added to the system.");
                                     break;
 
                                 case CargoType.MediumCargo:
                                     Console.Write("Does the cargo require a signature? (Y/N): ");
-                                    bool requiresSignature = ConvertAnswerToBool(Console.ReadLine());
+                                    bool requiresSignature = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                                     MediumCargo newMediumCargo = new MediumCargo(newCargoID, newCargoDescription, newCargoWeight, requiresSignature);
                                     fleetManager.AddCargo(newMediumCargo);
-                                    ConsoleHelper.ShowMessage($"{newMediumCargo.CargoID} has been added to the system.");
+                                    ConsoleHelper.ShowSuccess($"{newMediumCargo.CargoID} has been added to the system.");
                                     break;
 
                                 case CargoType.LargeCargo:
                                     Console.Write("Does the cargo require a forklift? (Y/N): ");
-                                    bool requiresForklift = ConvertAnswerToBool(Console.ReadLine());
+                                    bool requiresForklift = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                                     LargeCargo newLargeCargo = new LargeCargo(newCargoID, newCargoDescription, newCargoWeight, requiresForklift);
                                     fleetManager.AddCargo(newLargeCargo);
-                                    ConsoleHelper.ShowMessage($"{newLargeCargo.CargoID} has been added to the system.");
+                                    ConsoleHelper.ShowSuccess($"{newLargeCargo.CargoID} has been added to the system.");
                                     break;
 
                                 case CargoType.RefrigeratedCargo:
@@ -374,29 +369,35 @@ namespace SwiftHaul_Dispatch
                                         }
                                     RefrigeratedCargo newRefrigeratedCargo = new RefrigeratedCargo(newCargoID, newCargoDescription, newCargoWeight, requiredTemperatureCelsius);
                                     fleetManager.AddCargo(newRefrigeratedCargo);
-                                    ConsoleHelper.ShowMessage($"{newRefrigeratedCargo.CargoID} has been added to the system.");
+                                    ConsoleHelper.ShowSuccess($"{newRefrigeratedCargo.CargoID} has been added to the system.");
                                     break;
 
                                 default:
-                                    ConsoleHelper.InvalidMenuOption();
+                                    ConsoleHelper.ShowError("Invalid menu option. Please try again.");
                                     break;
                             }
                             break;
+
                         case CargoMenu.DisplayAllCargo:
                             fleetManager.DisplayAllCargo();
                             break;
+
                         case CargoMenu.RemoveCargo:
-                            fleetManager.DisplayAllCargo(false);
-                            Console.Write("\nEnter Cargo ID: ");
-                            int removeCargoID = Convert.ToInt32(Console.ReadLine());
-                            fleetManager.RemoveCargo(removeCargoID);
+                            if (fleetManager.DisplayAllCargo(false)) // only continue if there were vehicles to show
+                            {
+                                Console.Write("\nEnter Cargo ID: ");
+                                int removeCargoID = Convert.ToInt32(Console.ReadLine());
+                                fleetManager.RemoveCargo(removeCargoID);
+                            }
                             break;
+
                         case CargoMenu.BackToMainMenu:
                             ConsoleHelper.ClearScreen();
                             managingCargo = false;
                             break;
+
                         default:
-                            ConsoleHelper.InvalidMenuOption();
+                            ConsoleHelper.ShowError("Invalid menu option. Please try again.");
                             break;
                     }
                 }
