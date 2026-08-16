@@ -121,7 +121,7 @@ namespace SwiftHaul_Dispatch
                 }
                 catch (Exception ex)
                 {
-                    ConsoleHelper.ShowMessage(ex.ToString());
+                    ConsoleHelper.HandleException(ex);
                 }
             }
         }
@@ -218,11 +218,11 @@ namespace SwiftHaul_Dispatch
                                     break;
 
                                 case VehicleType.TitanHauler:
-                                    Console.Write("Enter number of trailers (max = 2): ");
+                                    Console.Write("Enter number of trailers (Range 0 - 2): ");
                                     int numberOfTrailers = Convert.ToInt32(Console.ReadLine());
-                                        if (numberOfTrailers > 2)
+                                        if (numberOfTrailers > 2 || numberOfTrailers < 0)
                                         {
-                                            throw new InvalidVehicleConfigurationException("Invalid input. Please enter a number between 0 and 2.");
+                                            throw new InvalidVehicleConfigurationException(numberOfTrailers > 2 ? "Too many trailers added." : "Unable to add negative trailers.");
                                         }
 
                                     TitanHauler newTitanHauler = new TitanHauler(newVehicleID, newVehicleName, newVehicleMileage, newVehicleCapacity, numberOfTrailers);
@@ -268,7 +268,7 @@ namespace SwiftHaul_Dispatch
                 }
                 catch (Exception ex)
                 {
-                    ConsoleHelper.ShowMessage(ex.ToString());
+                    ConsoleHelper.HandleException(ex);
                 }
             }
         }
@@ -402,7 +402,7 @@ namespace SwiftHaul_Dispatch
                 }
                 catch (Exception ex)
                 {
-                    ConsoleHelper.ShowMessage(ex.ToString());
+                    ConsoleHelper.HandleException(ex);
                 }
             }
         }

@@ -73,7 +73,7 @@ namespace SwiftHaul_Dispatch
 
                 default:
                     // default message so that the program does not stop running 
-                    ShowMessage($"An unexpected error occurred. Please try again.");
+                    ShowMessage($"An unexpected error occurred. Please try again. Error {ex}");
                     break;
             }
         }

@@ -56,7 +56,7 @@ namespace SwiftHaul_Dispatch
             }
             catch (VehicleNotFoundException ex)
             {
-                ConsoleHelper.ShowMessage(ex.Message);
+                ConsoleHelper.HandleException(ex);
             }
         }
 
@@ -109,7 +109,7 @@ namespace SwiftHaul_Dispatch
             }
             catch (CargoNotFoundException ex)
             {
-                ConsoleHelper.ShowMessage(ex.Message);
+                ConsoleHelper.HandleException(ex);
             }
         }
 
