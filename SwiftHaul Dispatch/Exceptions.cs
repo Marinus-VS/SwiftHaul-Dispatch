@@ -46,6 +46,22 @@ namespace SwiftHaul_Dispatch
         }
     }
 
+    // exeption for when cargo is already assigned
+    public class CargoAlreadyAssignedException : Exception
+    {
+        public CargoAlreadyAssignedException(string message) : base(message)
+        {
+        }
+    }
+
+    // exeption for when a vheclie is overloaded (unable to load anothor package)
+    public class VehicleOverloadException : Exception
+    {
+        public VehicleOverloadException(string message) : base(message) 
+        { 
+        }
+    }
+
     // exeption for when a file is not found
     public class SaveFileNotFoundException : Exception
     {

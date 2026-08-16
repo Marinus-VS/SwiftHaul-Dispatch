@@ -187,6 +187,41 @@ namespace SwiftHaul_Dispatch
         }
 
 
+        /////////////////////////////////////////////////// ---- Assign Cargo to Vehicle --- ///////////////////////////////////////////////////////////
+
+        public void AssignCargoToVehicle(int vehicleID, int cargoID)
+        {
+            Vehicle vehicle = vehicles.Find(v => v.VehicleID == vehicleID);
+            if (vehicle == null)
+            {
+                throw new VehicleNotFoundException($"Vehicle with ID {vehicleID} not found.");
+            }
+
+            Cargo cargo = cargoList.Find(c => c.CargoID == cargoID);
+            if (cargo == null)
+            {
+                throw new CargoNotFoundException($"Cargo with ID {cargoID} not found.");
+            }
+
+            if (cargo.IsAssigned)
+            {
+                throw new CargoAlreadyAssignedException($"Cargo ID {cargoID} is already assigned to a vehicle.");
+            }
+
+            double projectedLoad = vehicle.GetCurrentLoadWeight() + cargo.Weight;
+            if (projectedLoad > vehicle.VehicleCapacity)
+            {
+                throw new VehicleOverloadException(
+                    $"Cannot assign cargo {cargoID} ({cargo.Weight}kg) to {vehicle.VehicleName} — " +
+                    $"would exceed capacity ({projectedLoad}kg / {vehicle.VehicleCapacity}kg max).");
+            }
+
+            vehicle.AssignedCargo.Add(cargo);
+            cargo.IsAssigned = true;
+            ConsoleHelper.ShowSuccess($"Cargo {cargoID} assigned to {vehicle.VehicleName}.");
+        }
+
+
         /////////////////////////////////////////////////// ---- Events --- ///////////////////////////////////////////////////////////
 
         protected virtual void OnDeliveryCompleted(DispatchEventArgs e)

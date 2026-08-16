@@ -24,6 +24,9 @@ namespace SwiftHaul_Dispatch
         public string Description { get => _description; set => _description = value; }
         public double Weight { get => _weight; set => _weight = value; }
 
+        // if the cargo is assigned
+        public bool IsAssigned { get; set; } = false;
+
         public virtual void DisplayAllCargoInfo()
         {
             Console.WriteLine($"     ---- Cargo ID: {CargoID} ----");
