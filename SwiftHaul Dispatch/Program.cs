@@ -21,6 +21,7 @@ namespace SwiftHaul_Dispatch
             ManageCargo,
             AssignCargoToVehicle,
             ViewDispatchLog,
+            ManageSaveOperations,
             Exit
         }
 
@@ -75,7 +76,8 @@ namespace SwiftHaul_Dispatch
                 Console.WriteLine("2. Manage Cargo");
                 Console.WriteLine("3. Assign Cargo to Vehicle");
                 Console.WriteLine("4. View Dispatch Log");
-                Console.WriteLine("5. Exit");
+                Console.WriteLine("5. Manage Save Operations");
+                Console.WriteLine("6. Exit");
                 Console.WriteLine();
                 ConsoleHelper.ChooseOptionStyling();
 
@@ -95,6 +97,8 @@ namespace SwiftHaul_Dispatch
                             break;
                         case Menu.ViewDispatchLog:
                             break;
+                        case Menu.ManageSaveOperations:
+                            break;
                         case Menu.Exit:
                             running = false;
                             break;
@@ -110,7 +114,7 @@ namespace SwiftHaul_Dispatch
             }
         }
 
-        /////////////////////////////////////////////////// ---- Vehicle --- ///////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////// ---- Vehicle --- ///////////////////////////////////////////////////////////////////
 
         static void ManageVehicles()
         {
@@ -263,7 +267,7 @@ namespace SwiftHaul_Dispatch
             }
         }
 
-        /////////////////////////////////////////////////// ---- CARGO --- ///////////////////////////////////////////////////////////
+        //////////////////////////////////////////////////////////// ---- CARGO --- ////////////////////////////////////////////////////////////////////
 
         static void ManageCargo()
         {
@@ -310,7 +314,7 @@ namespace SwiftHaul_Dispatch
                             double newCargoWeight = Convert.ToDouble(Console.ReadLine());
 
                             // validate cargo capacity based on cargo type
-                            if (!(newCargoWeight < 1 || newCargoWeight > 36000))
+                            if (!(newCargoWeight <= 0 || newCargoWeight > 36000))
                             {
                                 if ((CargoType)type == CargoType.SmallCargo && newCargoWeight > 30)
                                 {

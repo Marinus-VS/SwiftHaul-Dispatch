@@ -76,7 +76,7 @@ namespace SwiftHaul_Dispatch
                     throw new VehicleNotFoundException($"Vehicle with ID {vehicleID} not found.");
                 }
 
-                ConsoleHelper.ShowWarning($"Are you sure you would like to remove {vehicleToRemove.VehicleName}? (Y / N)");
+                ConsoleHelper.ShowWarning($"Are you sure you would like to remove {vehicleToRemove.VehicleName}? (Y/N)");
                 ConsoleHelper.ChooseOptionStyling();
                 bool option = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                 if (option)
@@ -115,7 +115,7 @@ namespace SwiftHaul_Dispatch
             }
 
             // https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/tokens/interpolated
-            Console.WriteLine($"{"ID",-5}{"Type",-18}{"Weight",-10}{"Description",-25}{"Details",-30}");
+            Console.WriteLine($"\n{"ID",-5}{"Type",-18}{"Weight",-10}{"Description",-25}{"Details",-30}");
             Console.WriteLine(new string('-', 88));
 
             foreach (Cargo c in cargoList)
@@ -144,9 +144,9 @@ namespace SwiftHaul_Dispatch
                     throw new CargoNotFoundException($"Cargo with ID {cargoID} not found.");
                 }
 
-                ConsoleHelper.ShowWarning($"Are you srue you want to remove cargo ID: {cargoToRemove.CargoID}");
-                bool option = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
+                ConsoleHelper.ShowWarning($"Are you srue you want to remove cargo ID: {cargoToRemove.CargoID} (Y/N)");
                 ConsoleHelper.ChooseOptionStyling();
+                bool option = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
                 if (option)
                 {
                     cargoList.Remove(cargoToRemove);
