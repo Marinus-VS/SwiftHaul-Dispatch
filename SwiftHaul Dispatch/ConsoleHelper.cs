@@ -43,8 +43,16 @@ namespace SwiftHaul_Dispatch
         {
             switch (ex)
             {
-                case FormatException formatEx:
-                    ShowMessage("Invalid input. Please enter a valid number.");
+                case VehicleNotFoundException vehicleNotFoundEx:
+                    ShowMessage(vehicleNotFoundEx.Message);
+                    break;
+
+                case IncorrectVehicleForType incorrectVehicleEx:
+                    ShowMessage(incorrectVehicleEx.Message);
+                    break;
+
+                case CargoNotFoundException cargoNotFoundEx:
+                    ShowMessage(cargoNotFoundEx.Message);
                     break;
 
                 case IncorrectCargoForType cargoTypeEx:
@@ -55,12 +63,8 @@ namespace SwiftHaul_Dispatch
                     ShowMessage(vehicleConfigEx.Message);
                     break;
 
-                case VehicleNotFoundException vehicleNotFoundEx:
-                    ShowMessage(vehicleNotFoundEx.Message);
-                    break;
-
-                case CargoNotFoundException cargoNotFoundEx:
-                    ShowMessage(cargoNotFoundEx.Message);
+                case FormatException formatEx:
+                    ShowMessage("Invalid input. Please enter a valid number.");
                     break;
 
                 case ArgumentException argEx:

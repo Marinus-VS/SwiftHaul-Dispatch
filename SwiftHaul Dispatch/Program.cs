@@ -171,6 +171,28 @@ namespace SwiftHaul_Dispatch
                             Console.Write("Enter Vehicle Capacity (kg): ");
                             int newVehicleCapacity = Convert.ToInt32(Console.ReadLine());
 
+                            // validate vehicle capacity based on vehicle type
+                                if ((VehicleType)type == VehicleType.WaspRunner && (newVehicleCapacity > 30 || newVehicleCapacity < 1))
+                                {
+                                    throw new IncorrectVehicleForType(newVehicleCapacity > 30 ? "Vehicle capacity too high for Wasp Runner." : "Vehicle capacity too low for Wasp Runner.");
+                                }
+                                else if ((VehicleType)type == VehicleType.CascadeVan && (newVehicleCapacity > 1700 || newVehicleCapacity < 31))
+                                {
+                                    throw new IncorrectVehicleForType(newVehicleCapacity > 1700 ? "Vehicle capacity too high for Cascade Van." : "Vehicle capacity too low for Cascade Van.");
+                                }
+                                else if ((VehicleType)type == VehicleType.TitanHauler && (newVehicleCapacity > 36000 || newVehicleCapacity < 1001))
+                                {
+                                    throw new IncorrectVehicleForType(newVehicleCapacity > 36000 ? "Vehicle capacity too high for Titan Hauler." : "Vehicle capacity too low for Titan Hauler.");
+                                }
+                                else if ((VehicleType)type == VehicleType.GlacierTrans && (newVehicleCapacity > 7000 || newVehicleCapacity < 31))
+                                {
+                                    throw new IncorrectVehicleForType(newVehicleCapacity > 7000 ? "Vehicle capacity too high for Glacier Trans." : "Vehicle capacity too low for Glacier Trans.");
+                                }
+                                else if (newVehicleMileage < 0)
+                                {
+                                    throw new ArgumentException("Invalid input. Please enter a non-negative mileage.");
+                                }
+
                             switch ((VehicleType)type)
                             {
                                 case VehicleType.WaspRunner:

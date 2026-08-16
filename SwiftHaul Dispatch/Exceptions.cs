@@ -14,6 +14,14 @@ namespace SwiftHaul_Dispatch
         }
     }
 
+    // exception for when a vehicle's capacity does not match teh vehicle type
+    public class IncorrectVehicleForType : Exception
+    {
+        public IncorrectVehicleForType(string message) : base(message)
+        {
+        }
+    }
+
     // exception for when a cargo item is not found
     public class CargoNotFoundException : Exception
     {
