@@ -103,8 +103,10 @@ namespace SwiftHaul_Dispatch
                             ManageCargo();
                             break;
                         case Menu.AssignCargoToVehicle:
+                            ConsoleHelper.ShowError("This is still under development.");
                             break;
                         case Menu.ViewDispatchLog:
+                            ConsoleHelper.ShowError("This is still under development.");
                             break;
                         case Menu.ManageSaveOperations:
                             ManageSaveOperations();
@@ -461,10 +463,18 @@ namespace SwiftHaul_Dispatch
                             fleetManager.LoadSavedState(loadName);
                             break;
                         case FileMenu.ViewAllSaves:
+                            fleetManager.ViewAllSaves();
                             break;
                         case FileMenu.RemoveSavedState:
+                            if (fleetManager.ViewAllSaves(false))
+                            {
+                                Console.Write("\nEnter the name of the save to remove: ");
+                                string removeSaveName = Console.ReadLine();
+                                fleetManager.RemoveSavedState(removeSaveName);
+                            }
                             break;
                         case FileMenu.ClearCurrentLoadout:
+                            fleetManager.ClearCurrentLoadout();
                             break;
                         case FileMenu.BackToMainMenu:
                             ConsoleHelper.ClearScreen();

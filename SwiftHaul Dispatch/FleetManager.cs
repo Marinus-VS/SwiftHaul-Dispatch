@@ -473,5 +473,86 @@ namespace SwiftHaul_Dispatch
 
             ConsoleHelper.ShowSuccess($"Loadout '{saveName}' loaded successfully. ({vehicles.Count} vehicles, {cargoList.Count} cargo items)");
         }
+
+        //////// ---- View all files function --- //////
+
+        // lists all save files with their vehicle/cargo counts and last saved timestamp
+        public bool ViewAllSaves(bool waitForKeyPress = true)
+        {
+            if (!Directory.Exists(SaveFolder) || Directory.GetFiles(SaveFolder, "*.json").Length == 0)
+            {
+                ConsoleHelper.ShowError("No saved loadouts found.");
+                return false;
+            }
+
+            string[] saveFiles = Directory.GetFiles(SaveFolder, "*.json");
+
+            Console.WriteLine($"\n{"Save Name",-25}{"Vehicles",-12}{"Cargo",-12}{"Saved At",-25}");
+            Console.WriteLine(new string('-', 74));
+
+            foreach (string filePath in saveFiles)
+            {
+                string saveName = Path.GetFileNameWithoutExtension(filePath);
+                string json = File.ReadAllText(filePath);
+                LoadoutSaveData saveData = JsonConvert.DeserializeObject<LoadoutSaveData>(json);
+
+                Console.WriteLine($"{saveName,-25}{saveData.Vehicles.Count,-12}{saveData.Cargo.Count,-12}{saveData.SavedAt,-25}");
+            }
+
+            if (waitForKeyPress)
+            {
+                ConsoleHelper.PressAnyKeyToContinue();
+            }
+
+            return true;
+        }
+
+        //////// ---- View all files function --- //////
+
+        // deletes a saved loadout file by name, with confirmation
+        public void RemoveSavedState(string saveName)
+        {
+            string filePath = Path.Combine(SaveFolder, $"{saveName}.json");
+
+            if (!File.Exists(filePath))
+            {
+                throw new SaveFileNotFoundException($"Save file '{saveName}' not found.");
+            }
+
+            Console.Write($"Are you sure you want to delete save '{saveName}'? (Y/N): ");
+            ConsoleHelper.ChooseOptionStyling();
+            bool confirmed = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
+
+            if (confirmed)
+            {
+                File.Delete(filePath);
+                ConsoleHelper.ShowSuccess($"Save '{saveName}' deleted.");
+            }
+            else
+            {
+                ConsoleHelper.ShowError($"Save '{saveName}' was not deleted.");
+            }
+        }
+
+        //////// ---- Clear current loadout --- //////
+
+        // clears the current loadout fleet and cargo without touching saved files
+        public void ClearCurrentLoadout()
+        {
+            Console.Write("This will permanently clear ALL vehicles and cargo from the current session. Are you sure? (Y/N): ");
+            ConsoleHelper.ChooseOptionStyling();
+            bool confirmed = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
+
+            if (confirmed)
+            {
+                vehicles.Clear();
+                cargoList.Clear();
+                ConsoleHelper.ShowSuccess("Current loadout cleared.");
+            }
+            else
+            {
+                ConsoleHelper.ShowError("Clear cancelled. Current loadout unchanged.");
+            }
+        }
     }
 }
