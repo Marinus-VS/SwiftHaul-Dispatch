@@ -519,7 +519,7 @@ namespace SwiftHaul_Dispatch
                 throw new SaveFileNotFoundException($"Save file '{saveName}' not found.");
             }
 
-            Console.Write($"Are you sure you want to delete save '{saveName}'? (Y/N): ");
+            ConsoleHelper.ShowWarning($"Are you sure you want to delete save '{saveName}'? (Y/N): ");
             ConsoleHelper.ChooseOptionStyling();
             bool confirmed = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
 
@@ -539,7 +539,7 @@ namespace SwiftHaul_Dispatch
         // clears the current loadout fleet and cargo without touching saved files
         public void ClearCurrentLoadout()
         {
-            Console.Write("This will permanently clear ALL vehicles and cargo from the current session. Are you sure? (Y/N): ");
+            ConsoleHelper.ShowWarning("This will permanently clear ALL vehicles and cargo from the current session. Are you sure? (Y/N): ");
             ConsoleHelper.ChooseOptionStyling();
             bool confirmed = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
 
