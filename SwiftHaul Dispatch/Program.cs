@@ -103,7 +103,7 @@ namespace SwiftHaul_Dispatch
                             ManageCargo();
                             break;
                         case Menu.AssignCargoToVehicle:
-                            ConsoleHelper.ShowError("This is still under development.");
+                            AssignCargoToVehicle();
                             break;
                         case Menu.ViewDispatchLog:
                             ConsoleHelper.ShowError("This is still under development.");
@@ -420,7 +420,20 @@ namespace SwiftHaul_Dispatch
 
         static void AssignCargoToVehicle()
         {
+            ConsoleHelper.ClearScreen();
+            if (fleetManager.DisplayAllVehicles(false))
+            {
+                Console.Write("\nEnter Vehicle ID: ");
+                int vehicleID = Convert.ToInt32(Console.ReadLine());
 
+                if (fleetManager.DisplayAllCargo(false))
+                {
+                    Console.Write("\nEnter Cargo ID: ");
+                    int cargoID = Convert.ToInt32(Console.ReadLine());
+
+                    fleetManager.AssignCargoToVehicle(vehicleID, cargoID);
+                }
+            }
         }
 
         /////////////////////////////////////////////////// ---- File Functionality --- ///////////////////////////////////////////////////////////
