@@ -71,6 +71,13 @@ namespace SwiftHaul_Dispatch
 
         static void Main(string[] args)
         {
+
+            /////////////// TEMP CODE BLOCK -> FOR TESTING ///////////////////////
+
+            fleetManager.LoadSavedState("TestData");
+
+            //////////////////////////////////////////////////////////////////////
+            
             bool running = true;
             ConsoleHelper.ClearScreen();
             while (running)
@@ -421,6 +428,7 @@ namespace SwiftHaul_Dispatch
         static void AssignCargoToVehicle()
         {
             ConsoleHelper.ClearScreen();
+            // Check if there are vehicles / cargo in thge system
             if (fleetManager.DisplayAllVehicles(false))
             {
                 Console.Write("\nEnter Vehicle ID: ");

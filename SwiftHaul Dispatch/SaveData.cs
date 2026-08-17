@@ -26,7 +26,7 @@ namespace SwiftHaul_Dispatch
     // flat, serializable version of any cargo item
     public class CargoSaveData
     {
-        public string CargoType { get; set; } // "SmallCargo", "MediumCargo", etc.
+        public string CargoType { get; set; }
         public int CargoID { get; set; }
         public string Description { get; set; }
         public double Weight { get; set; }

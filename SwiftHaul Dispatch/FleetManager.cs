@@ -119,6 +119,7 @@ namespace SwiftHaul_Dispatch
             Cargo checkCargo = cargoList.Find(v => v.CargoID == cargo.CargoID);
             if (checkCargo == null)
             {
+
                 cargoList.Add(cargo);
                 ConsoleHelper.ShowSuccess($"{cargo.CargoID} has been added to the system.");
             }
@@ -154,7 +155,6 @@ namespace SwiftHaul_Dispatch
             return true;
         }
 
-
         // remove cargo from the system by its ID
         public void RemoveCargo(int cargoID)
         {
@@ -185,7 +185,6 @@ namespace SwiftHaul_Dispatch
                 ConsoleHelper.HandleException(ex);
             }
         }
-
 
         /////////////////////////////////////////////////// ---- Assign Cargo to Vehicle --- ///////////////////////////////////////////////////////////
 
@@ -221,6 +220,11 @@ namespace SwiftHaul_Dispatch
             ConsoleHelper.ShowSuccess($"Cargo {cargoID} assigned to {vehicle.VehicleName}.");
         }
 
+        // display vehicle carry carying cargo ID
+        public void DisplayCargoperVhecile()
+        {
+
+        }
 
         /////////////////////////////////////////////////// ---- Events --- ///////////////////////////////////////////////////////////
 
