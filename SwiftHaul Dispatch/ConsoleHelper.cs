@@ -121,6 +121,14 @@ namespace SwiftHaul_Dispatch
                     ShowError(vehicleConfigEx.Message);
                     break;
 
+                case CargoAlreadyAssignedException cargoAssignnedEx:
+                    ShowError(cargoAssignnedEx.Message);
+                    break;
+
+                case VehicleOverloadException vehicleAssignnedEx:
+                    ShowError(vehicleAssignnedEx.Message);
+                    break;
+
                 case SaveFileNotFoundException saveNotFoundEx:
                     ShowError(saveNotFoundEx.Message);
                     break;
