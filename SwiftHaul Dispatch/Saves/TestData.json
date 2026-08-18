@@ -1,0 +1,263 @@
+{
+  "SavedAt": "2026-08-17T13:24:11.2175532+02:00",
+  "Vehicles": [
+    {
+      "VehicleType": "WaspRunner",
+      "VehicleID": 1,
+      "VehicleName": "Flash",
+      "VehicleMilage": 43000,
+      "VehicleCapacity": 30,
+      "MaxDeliveryStops": null,
+      "NumberOfTrailers": null,
+      "MaxSpeedKmh": 160,
+      "IsWeatherRestricted": false,
+      "TargetTemperatureCelsius": null
+    },
+    {
+      "VehicleType": "WaspRunner",
+      "VehicleID": 2,
+      "VehicleName": "Buzz",
+      "VehicleMilage": 21500,
+      "VehicleCapacity": 25,
+      "MaxDeliveryStops": null,
+      "NumberOfTrailers": null,
+      "MaxSpeedKmh": 140,
+      "IsWeatherRestricted": true,
+      "TargetTemperatureCelsius": null
+    },
+    {
+      "VehicleType": "CascadeVan",
+      "VehicleID": 3,
+      "VehicleName": "Rover",
+      "VehicleMilage": 65000,
+      "VehicleCapacity": 1200,
+      "MaxDeliveryStops": 12,
+      "NumberOfTrailers": null,
+      "MaxSpeedKmh": null,
+      "IsWeatherRestricted": null,
+      "TargetTemperatureCelsius": null
+    },
+    {
+      "VehicleType": "CascadeVan",
+      "VehicleID": 4,
+      "VehicleName": "Voyager",
+      "VehicleMilage": 38000,
+      "VehicleCapacity": 900,
+      "MaxDeliveryStops": 8,
+      "NumberOfTrailers": null,
+      "MaxSpeedKmh": null,
+      "IsWeatherRestricted": null,
+      "TargetTemperatureCelsius": null
+    },
+    {
+      "VehicleType": "TitanHauler",
+      "VehicleID": 5,
+      "VehicleName": "Colossus",
+      "VehicleMilage": 152000,
+      "VehicleCapacity": 25000,
+      "MaxDeliveryStops": null,
+      "NumberOfTrailers": 2,
+      "MaxSpeedKmh": null,
+      "IsWeatherRestricted": null,
+      "TargetTemperatureCelsius": null
+    },
+    {
+      "VehicleType": "TitanHauler",
+      "VehicleID": 6,
+      "VehicleName": "Behemoth",
+      "VehicleMilage": 98000,
+      "VehicleCapacity": 15000,
+      "MaxDeliveryStops": null,
+      "NumberOfTrailers": 1,
+      "MaxSpeedKmh": null,
+      "IsWeatherRestricted": null,
+      "TargetTemperatureCelsius": null
+    },
+    {
+      "VehicleType": "GlacierTrans",
+      "VehicleID": 7,
+      "VehicleName": "Frostbite",
+      "VehicleMilage": 71000,
+      "VehicleCapacity": 5000,
+      "MaxDeliveryStops": null,
+      "NumberOfTrailers": null,
+      "MaxSpeedKmh": null,
+      "IsWeatherRestricted": null,
+      "TargetTemperatureCelsius": -18
+    },
+    {
+      "VehicleType": "GlacierTrans",
+      "VehicleID": 8,
+      "VehicleName": "Permafrost",
+      "VehicleMilage": 54000,
+      "VehicleCapacity": 3500,
+      "MaxDeliveryStops": null,
+      "NumberOfTrailers": null,
+      "MaxSpeedKmh": null,
+      "IsWeatherRestricted": null,
+      "TargetTemperatureCelsius": 2
+    }
+  ],
+  "Cargo": [
+    {
+      "CargoType": "SmallCargo",
+      "CargoID": 101,
+      "Description": "Smartphone box",
+      "Weight": 1.2,
+      "IsFragile": true,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "SmallCargo",
+      "CargoID": 102,
+      "Description": "Paperback books",
+      "Weight": 3.5,
+      "IsFragile": false,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "SmallCargo",
+      "CargoID": 103,
+      "Description": "Glassware set",
+      "Weight": 8.0,
+      "IsFragile": true,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "SmallCargo",
+      "CargoID": 104,
+      "Description": "Wireless keyboard",
+      "Weight": 0.9,
+      "IsFragile": false,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "MediumCargo",
+      "CargoID": 105,
+      "Description": "Office chair",
+      "Weight": 220.0,
+      "IsFragile": null,
+      "RequiresSignature": true,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "MediumCargo",
+      "CargoID": 106,
+      "Description": "Legal documents",
+      "Weight": 45.0,
+      "IsFragile": null,
+      "RequiresSignature": true,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "MediumCargo",
+      "CargoID": 107,
+      "Description": "Kitchen appliance",
+      "Weight": 610.0,
+      "IsFragile": null,
+      "RequiresSignature": false,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "MediumCargo",
+      "CargoID": 108,
+      "Description": "Auto parts crate",
+      "Weight": 875.0,
+      "IsFragile": null,
+      "RequiresSignature": false,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "LargeCargo",
+      "CargoID": 109,
+      "Description": "Industrial machine part",
+      "Weight": 4200.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": true,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "LargeCargo",
+      "CargoID": 110,
+      "Description": "Pallet of bricks",
+      "Weight": 12000.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": true,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "LargeCargo",
+      "CargoID": 111,
+      "Description": "Steel beams",
+      "Weight": 25000.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": true,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "LargeCargo",
+      "CargoID": 112,
+      "Description": "Furniture set",
+      "Weight": 3400.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": false,
+      "RequiredTemperatureCelsius": null
+    },
+    {
+      "CargoType": "RefrigeratedCargo",
+      "CargoID": 113,
+      "Description": "Frozen seafood batch",
+      "Weight": 850.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": -15
+    },
+    {
+      "CargoType": "RefrigeratedCargo",
+      "CargoID": 114,
+      "Description": "Dairy shipment",
+      "Weight": 1200.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": 4
+    },
+    {
+      "CargoType": "RefrigeratedCargo",
+      "CargoID": 115,
+      "Description": "Vaccine cold chain box",
+      "Weight": 120.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": -20
+    },
+    {
+      "CargoType": "RefrigeratedCargo",
+      "CargoID": 116,
+      "Description": "Fresh produce pallet",
+      "Weight": 3100.0,
+      "IsFragile": null,
+      "RequiresSignature": null,
+      "RequiresForklift": null,
+      "RequiredTemperatureCelsius": 1
+    }
+  ]
+}
