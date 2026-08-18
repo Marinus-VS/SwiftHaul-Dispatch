@@ -16,7 +16,7 @@ namespace SwiftHaul_Dispatch
         }
 
         public SmallCargo(int cargoID, string description, double weight, bool isFragile)
-            : base(cargoID, weight, description)
+            : base(cargoID, description, weight )
         {
             this.IsFragile = isFragile;
         }

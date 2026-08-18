@@ -16,7 +16,7 @@ namespace SwiftHaul_Dispatch
         }
 
         public LargeCargo(int cargoID, string description, double weight, bool requiresForklift)
-            : base(cargoID, weight, description)
+            : base(cargoID, description, weight)
         {
             this.RequiresForklift = requiresForklift;
         }

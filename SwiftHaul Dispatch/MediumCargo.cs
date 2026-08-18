@@ -16,7 +16,7 @@ namespace SwiftHaul_Dispatch
         } 
 
         public MediumCargo(int cargoID, string description, double weight, bool requiresSignature)
-            : base(cargoID, weight, description)
+            : base(cargoID, description, weight )
         {
             this.RequiresSignature = requiresSignature;
         }

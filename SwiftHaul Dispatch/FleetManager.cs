@@ -119,9 +119,20 @@ namespace SwiftHaul_Dispatch
             Cargo checkCargo = cargoList.Find(v => v.CargoID == cargo.CargoID);
             if (checkCargo == null)
             {
+                double cost = cargo.CalculateShippingCost(7);
+                ConsoleHelper.ShowWarning($"Package ID: {cargo.CargoID} will cost {cost}R. Would you like to continue? (Y/N)");
+                ConsoleHelper.ChooseOptionStyling();
+                bool option = ConsoleHelper.ConvertAnswerToBool(Console.ReadLine());
 
-                cargoList.Add(cargo);
-                ConsoleHelper.ShowSuccess($"{cargo.CargoID} has been added to the system.");
+                if (option)
+                {
+                    cargoList.Add(cargo);
+                    ConsoleHelper.ShowSuccess($"{cargo.CargoID} has been added to the system.");
+                }
+                else
+                {
+                    ConsoleHelper.ShowError("Cargo was not added to the system.");
+                }
             }
             else
             {
