@@ -71,6 +71,19 @@ namespace SwiftHaul_Dispatch
 
         static void Main(string[] args)
         {
+            // subscribe to events and start the monitor thread
+            fleetManager.DeliveryCompleted += (sender, e) =>
+            {
+                fleetManager.AddLogEntry($"[{e.Timestamp:HH:mm:ss}] {e.Message}");
+            };
+
+            fleetManager.AlertTriggered += (sender, e) =>
+            {
+                fleetManager.AddLogEntry($"[{e.Timestamp:HH:mm:ss}] {e.Message}");
+            };
+
+            fleetManager.StartDispatchMonitor();
+
 
             /////////////// TEMP CODE BLOCK -> FOR TESTING ///////////////////////
 
@@ -113,7 +126,7 @@ namespace SwiftHaul_Dispatch
                             AssignCargoToVehicle();
                             break;
                         case Menu.ViewDispatchLog:
-                            ConsoleHelper.ShowError("This is still under development.");
+                            ViewDispatchLog();
                             break;
                         case Menu.ManageSaveOperations:
                             ManageSaveOperations();
@@ -442,6 +455,19 @@ namespace SwiftHaul_Dispatch
                     fleetManager.AssignCargoToVehicle(vehicleID, cargoID);
                 }
             }
+        }
+
+        /////////////////////////////////////////////////// ---- Dispatch Log --- ///////////////////////////////////////////////////////////
+
+        static void ViewDispatchLog()
+        {
+            ConsoleHelper.ClearScreen();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("...............................................");
+            Console.WriteLine("                   ALL LOGS");
+            Console.WriteLine(".............................................\n");
+            Console.ResetColor();
+            fleetManager.ViewDispatchLog();
         }
 
         /////////////////////////////////////////////////// ---- File Functionality --- ///////////////////////////////////////////////////////////

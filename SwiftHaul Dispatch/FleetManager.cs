@@ -14,8 +14,24 @@ namespace SwiftHaul_Dispatch
         private List<Vehicle> vehicles;
         private List<Cargo> cargoList;
 
+
+        // dispatch varible declerations
         public event DispatchEventHandler DeliveryCompleted;
         public event DispatchEventHandler AlertTriggered;
+
+        private List<string> dispatchLog = new List<string>();
+        public List<string> DispatchLog
+        {
+            get { return dispatchLog; }
+        }
+
+        public void AddLogEntry(string log)
+        {
+            lock (dispatchLog)
+            {
+                dispatchLog.Add(log);
+            }
+        }
 
         // folder where all save files live
         private static readonly string SaveFolder = "Saves";
@@ -35,6 +51,7 @@ namespace SwiftHaul_Dispatch
             vehicles = new List<Vehicle>();
             cargoList = new List<Cargo>();
         }
+
 
         /////////////////////////////////////////////////// ---- Vehicle --- ///////////////////////////////////////////////////////////
 
@@ -197,6 +214,7 @@ namespace SwiftHaul_Dispatch
             }
         }
 
+
         /////////////////////////////////////////////////// ---- Assign Cargo to Vehicle --- ///////////////////////////////////////////////////////////
 
         public void AssignCargoToVehicle(int vehicleID, int cargoID)
@@ -222,8 +240,7 @@ namespace SwiftHaul_Dispatch
             if (projectedLoad > vehicle.VehicleCapacity)
             {
                 throw new VehicleOverloadException(
-                    $"Cannot assign cargo {cargoID} ({cargo.Weight}kg) to {vehicle.VehicleName} — " +
-                    $"would exceed capacity ({projectedLoad}kg / {vehicle.VehicleCapacity}kg max).");
+                    $"Cannot assign cargo {cargoID} ({cargo.Weight}kg) to {vehicle.VehicleName}. Would exceed vehicle capacity ({projectedLoad}kg / {vehicle.VehicleCapacity}kg max).");
             }
 
             vehicle.AssignedCargo.Add(cargo);
@@ -237,8 +254,10 @@ namespace SwiftHaul_Dispatch
 
         }
 
+
         /////////////////////////////////////////////////// ---- Events --- ///////////////////////////////////////////////////////////
 
+        //////// ---- Thread creation --- //////
         protected virtual void OnDeliveryCompleted(DispatchEventArgs e)
         {
             DeliveryCompleted?.Invoke(this, e);
@@ -261,6 +280,9 @@ namespace SwiftHaul_Dispatch
 
             // point the thread to the method
             monitorThread = new Thread(MonitorFleet); 
+
+            // allows monitoring in background
+            monitorThread.IsBackground = true;
 
             // starts the thread
             monitorThread.Start(); 
@@ -303,6 +325,52 @@ namespace SwiftHaul_Dispatch
         {
             isMonitoring = false; 
         }
+
+
+        //////// ---- Dispatch logs --- //////
+        public bool ViewDispatchLog(bool waitForKeyPress = true)
+        {
+            lock (dispatchLog)
+            {
+                if (dispatchLog.Count == 0)
+                {
+                    ConsoleHelper.ShowError("No dispatch activity recorded yet.");
+                    return false;
+                }
+
+                Console.WriteLine("\n---- Dispatch log ----");
+                foreach (string log in dispatchLog)
+                {
+                    Console.WriteLine(log);
+                }
+            }
+
+            Console.WriteLine("\n---- Vehicle Cargo Assignments ----");
+            foreach (Vehicle v in vehicles)
+            {
+                Console.WriteLine($"\n{v.VehicleName} (ID: {v.VehicleID}) - Load: {v.GetCurrentLoadWeight()}kg / {v.VehicleCapacity}kg");
+
+                if (v.AssignedCargo.Count == 0)
+                {
+                    Console.WriteLine("   No cargo assigned.");
+                }
+                else
+                {
+                    foreach (Cargo c in v.AssignedCargo)
+                    {
+                        Console.WriteLine($"   - Cargo ID {c.CargoID}: {c.Description} ({c.Weight}kg)");
+                    }
+                }
+            }
+
+            if (waitForKeyPress)
+            {
+                ConsoleHelper.PressAnyKeyToContinue();
+            }
+
+            return true;
+        }
+
 
         /////////////////////////////////////////////////// ---- File Functionality --- ///////////////////////////////////////////////////////////
 
