@@ -47,5 +47,17 @@ namespace SwiftHaul_Dispatch
         {
             return "N/A";
         }
+
+        // to track its own assigned cargo
+        private List<Cargo> assignedCargo = new List<Cargo>();
+        public List<Cargo> AssignedCargo
+        {
+            get { return assignedCargo; }
+        }
+
+        public double GetCurrentLoadWeight()
+        {
+            return assignedCargo.Sum(c => c.Weight);
+        }
     }
 }

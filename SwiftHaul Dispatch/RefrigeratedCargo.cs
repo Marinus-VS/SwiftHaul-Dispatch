@@ -16,7 +16,7 @@ namespace SwiftHaul_Dispatch
         }
 
         public RefrigeratedCargo(int cargoID, string description, double weight, int requiredTemperatureCelsius)
-            : base(cargoID, weight, description)
+            : base(cargoID, description, weight)
         {
             this.RequiredTemperatureCelsius = requiredTemperatureCelsius;
         }
