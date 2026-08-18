@@ -87,7 +87,7 @@ namespace SwiftHaul_Dispatch
 
             /////////////// TEMP CODE BLOCK -> FOR TESTING ///////////////////////
 
-            fleetManager.LoadSavedState("TestData");
+            // fleetManager.LoadSavedState("TestData");
 
             //////////////////////////////////////////////////////////////////////
             
